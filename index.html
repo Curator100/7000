@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tuition Seba</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #E3F2F9;
+            color: #2C3E50;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        h1 {
+            color: #007FFF;
+        }
+        h2 {
+            color: #E52B50;
+        }
+        p {
+            font-size: 18px;
+            color: #2C3E50;
+        }
+        .buttons {
+            margin: 20px 0;
+        }
+        .button {
+            padding: 10px 20px;
+            margin: 5px;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+        }
+        .button-teacher {
+            background-color: #007FFF;
+        }
+        .button-tuition {
+            background-color: #52B788;
+        }
+        .tuition-list {
+            margin: 20px auto;
+            max-width: 600px;
+        }
+        .tuition {
+            border: 1px solid #52B788;
+            border-radius: 5px;
+            margin: 10px 0;
+            padding: 10px;
+        }
+        .apply-button {
+            background-color: #E52B50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+        .slideshow {
+            margin: 30px auto;
+            max-width: 400px;
+        }
+        .slideshow img {
+            width: 100%;
+            border-radius: 10px;
+        }
+        .footer {
+            margin: 30px 0;
+        }
+        .footer a {
+            text-decoration: none;
+            color: #007FFF;
+        }
+    </style>
+</head>
+<body>
+    <h1>Tuition Seba</h1>
+    <h2>1. Who is the owner of Tuition Seba?</h2>
+    <p>Md. Mehedi Hasan. BA Hons. MA</p>
+    <h2>2. Where is the office of Tuition Seba?</h2>
+    <p>25 number dokan, Sholoshohor Super Market, 2 no gate.</p>
+    <h2>3. কেন বিশ্বাস করবেন Tuition Seba?</h2>
+    <p>Tuition Seba একটি সুপ্রতিষ্ঠিত এবং সেরা টিউশন মিডিয়া। নিজস্ব অফিস এবং ওয়েবসাইট সহ, এই মিডিয়া শত শত অভিভাবক এবং ছাত্রছাত্রীকে টিউশন দিয়ে যাচ্ছে।</p>
+    
+    <div class="buttons">
+        <button class="button button-teacher" onclick="window.location.href='https://forms.gle/TuTDSd9CWdWwMGNL7'">Get a Teacher</button>
+        <button class="button button-tuition" onclick="window.location.href='https://forms.gle/JCSSMoDuQSZzj5QFA'">Get a Tuition</button>
+    </div>
+
+    <div class="tuition-list" id="tuition-list">
+        <!-- Tuition data will be dynamically loaded here -->
+    </div>
+
+    <div class="slideshow" id="slideshow">
+        <img src="1.jpg" alt="Customer Review">
+    </div>
+
+    <div class="buttons">
+        <button class="button button-teacher" onclick="window.location.href='https://www.facebook.com/groups/1003753066957594/?ref=share&mibextid=NSMWBT'">Facebook</button>
+        <button class="button button-tuition" onclick="window.location.href='https://wa.me/01633-920928'">WhatsApp</button>
+    </div>
+
+    <footer class="footer">
+        <p>Website developed by <a href="https://wa.me/01712524912">Ray Website Builder</a>.</p>
+    </footer>
+
+    <script>
+        const SHEET_API_KEY = 'AIzaSyCSH-hpcIXDXgGBB9AY2jv8pUC1kb1Ibag';
+        const SHEET_ID = '10w6b7civ7e911eFwU-eNusjKJTawgTfLT2PpqXfOnK8';
+        const SHEET_RANGE = 'Sheet1';
+
+        async function fetchTuitionData() {
+            const response = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${SHEET_RANGE}?key=${SHEET_API_KEY}`);
+            const data = await response.json();
+
+            if (!data.values) return;
+
+            const rows = data.values;
+            const headers = rows[0];
+            const publishIndex = headers.indexOf('PUBLISH');
+            const relevantIndices = ['CODE', 'CLASS', 'SUBJECT', 'WEEKLY', 'LOCATION', 'SALARY', 'MEDIA FEE', 'ADDITIONAL INFO']
+                .map(header => headers.indexOf(header));
+
+            const tuitionList = document.getElementById('tuition-list');
+            tuitionList.innerHTML = '';
+
+            rows.slice(1).forEach(row => {
+                if (row[publishIndex] === 'Y') {
+                    const tuitionDiv = document.createElement('div');
+                    tuitionDiv.classList.add('tuition');
+
+                    relevantIndices.forEach(index => {
+                        if (row[index]) {
+                            const p = document.createElement('p');
+                            p.textContent = `${headers[index]}: ${row[index]}`;
+                            tuitionDiv.appendChild(p);
+                        }
+                    });
+
+                    const applyButton = document.createElement('button');
+                    applyButton.textContent = 'Apply Now';
+                    applyButton.classList.add('apply-button');
+                    applyButton.onclick = () => window.location.href = 'https://forms.gle/JCSSMoDuQSZzj5QFA';
+                    tuitionDiv.appendChild(applyButton);
+
+                    tuitionList.appendChild(tuitionDiv);
+                }
+            });
+        }
+
+        function startSlideshow() {
+            const slideshow = document.getElementById('slideshow');
+            const images = ['1.jpg', '2.jpg', '3.jpg', '4.jpg', '5.jpg', '6.jpg', '7.jpg'];
+            let index = 0;
+
+            setInterval(() => {
+                index = (index + 1) % images.length;
+                slideshow.querySelector('img').src = images[index];
+            }, 3000);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchTuitionData();
+            startSlideshow();
+        });
+    </script>
+</body>
+</html>
