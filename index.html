@@ -74,6 +74,12 @@
             text-decoration: none;
             color: #007FFF;
         }
+        .contact-text {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2C3E50;
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
@@ -82,7 +88,7 @@
     <p>Md. Mahedi Hasan. BA Hons. MA</p>
     <h2>2. Where is the office of Tuition Seba?</h2>
     <p>25 number shop, Sholoshohor Super Market, 2 no gate.</p>
-    <h2>Why trust us?</h2>
+    <h2>কেন বিশ্বাস করবেন Tuition Seba?</h2>
     <p>Tuition Seba একটি সুপ্রতিষ্ঠিত এবং চট্টগ্রাম শহরের অন্যতম একটি টিউশন মিডিয়া। আমাদের রয়েছে নিজস্ব অফিস ও দীর্ঘ কয়েক বছরের টিউশন ও গৃহশিক্ষক ও শিক্ষিকা দেয়ার অভিজ্ঞতা। আস্থা ও বিশ্বস্ততায় আমরা একধাপ এগিয়ে।।</p>
     
     <div class="buttons">
@@ -98,6 +104,8 @@
         <img src="1.jpg" alt="Customer Review">
     </div>
 
+    <!-- Contact Section -->
+    <div class="contact-text">Contact us</div>
     <div class="buttons">
         <button class="button button-teacher" onclick="window.location.href='https://www.facebook.com/groups/1003753066957594/?ref=share&mibextid=NSMWBT'">Facebook</button>
         <button class="button button-tuition" onclick="window.location.href='https://wa.me/+8801633-920928'">WhatsApp</button>
@@ -121,8 +129,11 @@
             const rows = data.values;
             const headers = rows[0];
             const publishIndex = headers.indexOf('PUBLISH');
-            const relevantIndices = ['CODE', 'CLASS', 'SUBJECT', 'WEEKLY', 'LOCATION', 'STUDENT', 'TIME', 'JOINING', 'MEDIUM', 'SALARY', 'MEDIA FEE', 'ADDITIONAL INFO']
-                .map(header => headers.indexOf(header));
+            const relevantHeaders = [
+                'Available Tuition Code', 'Wanted Teacher', 'Student', 'Class', 'Medium', 
+                'Subject', 'Day', 'Time', 'Salary', 'Location', 'Joining'
+            ];
+            const relevantIndices = relevantHeaders.map(header => headers.indexOf(header));
 
             const tuitionList = document.getElementById('tuition-list');
             tuitionList.innerHTML = '';
@@ -132,10 +143,10 @@
                     const tuitionDiv = document.createElement('div');
                     tuitionDiv.classList.add('tuition');
 
-                    relevantIndices.forEach(index => {
+                    relevantIndices.forEach((index, i) => {
                         if (row[index]) {
                             const p = document.createElement('p');
-                            p.textContent = `${headers[index]}: ${row[index]}`;
+                            p.textContent = `${relevantHeaders[i]}: ${row[index]}`;
                             tuitionDiv.appendChild(p);
                         }
                     });
